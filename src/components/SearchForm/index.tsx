@@ -1,27 +1,18 @@
-import { PokemonContext } from "../../context/PokemonContext"
-import {useContext, useEffect, useRef, useState} from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { setPokemon } from "../../state/Reducers"
+import { useInfo } from "../../hooks/useInfo"
+
 const SearchBar = () => {
-  // const dispatch = useDispatch()
-  // const pokemonData = {name:'pikachu'}
-  const Data = useSelector((state) => state.pokemonData)
   
-  // const {setSearch, search} = useContext(PokemonContext)
-  const handleSubmit = (e) => {
+  const {setSearch} = useInfo()
+  const handleSubmit = (e:any) => {
     e.preventDefault()
-    // dispatch(setPokemon({pokemonData}))
-    console.log(e.target.pokemonName.value)
+    setSearch(e.target.pokemonName.value)
   }
-  const handleChange = (e) => {
-    console.log(e.target.value)
-  }
+
   return (
     <form onSubmit={handleSubmit}>
       <input 
         name="pokemonName" 
         type="text"
-        onChange={handleChange}
       />
       <input type="submit" />
     </form>
