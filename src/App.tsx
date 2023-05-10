@@ -5,11 +5,11 @@ import './App.css'
 function App() {
 
   return (
-    <>
-     <Switch>
-        <Route component={Home} path="/"/>
-      </Switch>
-    </>
+      <>
+        <Switch>
+          <Route component={Home} path="/"/>
+        </Switch>
+      </>
   )
 }
 

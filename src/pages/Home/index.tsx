@@ -1,10 +1,12 @@
 import Navbar from "../../components/NavBar/index"
-import InfoDisplayer from "../../components/InfoDisplayer"
+import SearchBar from "../../components/SearchForm";
+
+
 export default function Home(){
   return (
     <>
       <Navbar /> 
-      <InfoDisplayer />   
+      <SearchBar />
     </>
   )
 }
