@@ -8,7 +8,10 @@ function App() {
   return (
       <PokemonContextProvider>
         <Switch>
-          <Route component={Home} path="/"/>
+          <Route 
+            component={Home} 
+            path="/"
+          />
         </Switch>
       </PokemonContextProvider>
   )

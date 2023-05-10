@@ -1,9 +1,18 @@
-import React, {useState} from "react"
+import React, {useState, Dispatch} from "react"
 
-const Context = React.createContext({})
+type ContextType ={
+  pokemon:object
+  setPokemon?:Dispatch<React.SetStateAction<string>>
+}
 
+const Context = React.createContext<ContextType>({
+  pokemon: {}
+})
 
-export const PokemonContextProvider = ({children}:any) => {
+type Props = {
+  children: React.ReactNode
+}
+export const PokemonContextProvider: React.FC<Props> = ({children}) => {
   const [pokemon, setPokemon] = useState({})
   return (
     <Context.Provider value={{pokemon, setPokemon}}>

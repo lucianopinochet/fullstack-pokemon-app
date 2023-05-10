@@ -1,9 +1,16 @@
+import React, { Dispatch } from "react"
 
-const SearchForm = ({handleSearch}) => {
+type Props = {
+  handleSearch:Dispatch<React.SetStateAction<string>>
+}
+const SearchForm: React.FC<Props> = ({handleSearch}) => {
   
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault()
-    handleSearch(e.target.pokemonName.value)
+    const target = e.target as typeof e.target & {
+      pokemonName: {value:string}
+    }
+    handleSearch(target.pokemonName.value)
   }
 
   return (
