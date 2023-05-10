@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react"
 import getPokemon from "../../services/getPokemon"
-import { useDispatch } from "react-redux"
-import { setPokemon } from "../../state/Reducers"
+import {useContext} from "react"
+import PokemonContext from "../../context/PokemonContext"
 export const useInfo = () => {
-  const [pokemon, setPokemon] = useState({name:'pikachu'})
   const [search, setSearch] = useState('pikachu')
 
-  const dispatch = useDispatch()
+  const {pokemon, setPokemon} = useContext(PokemonContext)
 
   useEffect(() => {
     const data = getPokemon(search).then((data)=>{
       setPokemon(data)
-      console.log(data)
     })
-  },[search,setPokemon])
+  },[search])
   return {pokemon ,setSearch }
 }

@@ -1,11 +1,23 @@
-import { useInfo } from "../../hooks/useInfo"
-
-const PokemonInfo = () => {
-  const {pokemon} = useInfo()
+import Info from "../Info";
+const PokemonInfo = ({pokemon}:any) => {
+  const keys = Object.keys(pokemon)
+  const list = []
+  // for (const key of pokemon){
+    // }
+  for (const key of keys) {
+    list.push(key)
+  }
+  console.log(list)
   return (
-    <h1>
-      {pokemon.name}
-    </h1>
+    <>
+      {
+        list.map((prop, index) => {
+          if(typeof(pokemon[prop]) !== "object"){
+            return <Info prop={prop} index={index} pokemon={pokemon}/>
+          }
+        })
+      }
+    </>
   )
 }
 

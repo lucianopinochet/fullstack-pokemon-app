@@ -1,11 +1,9 @@
-import { useInfo } from "../../hooks/useInfo"
 
-const SearchBar = () => {
+const SearchForm = ({handleSearch}) => {
   
-  const {setSearch} = useInfo()
   const handleSubmit = (e:any) => {
     e.preventDefault()
-    setSearch(e.target.pokemonName.value)
+    handleSearch(e.target.pokemonName.value)
   }
 
   return (
@@ -19,4 +17,4 @@ const SearchBar = () => {
   )
 }
 
-export default SearchBar
+export default SearchForm

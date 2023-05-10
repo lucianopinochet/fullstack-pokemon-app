@@ -1,15 +1,16 @@
 import Navbar from "../../components/NavBar/index"
-import SearchBar from "../../components/SearchForm";
+import SearchForm from "../../components/SearchForm";
 import PokemonInfo from "../../components/PokemonInfo";
 import { useInfo } from "../../hooks/useInfo";
 export default function Home(){
-  const {pokemon} = useInfo()
+
+  const {pokemon, setSearch} = useInfo()
 
   return (
     <>
       <Navbar /> 
-      <SearchBar />
-      <PokemonInfo />
+      <SearchForm handleSearch={setSearch}/>
+      <PokemonInfo pokemon={pokemon}/>
     </>
   )
 }
