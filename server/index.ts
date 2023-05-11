@@ -1,0 +1,35 @@
+import express from "express"
+import mongoose, {ConnectOptions} from "mongoose"
+import cors from "cors"
+import dotenv from "dotenv"
+import helmet from "helmet"
+import morgan from "morgan"
+import path from "path"
+import { fileURLToPath } from "url"
+
+import authRoutes from './routes/auth.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename).slice(0,-5)
+// console.log(__dirname, process.cwd())
+
+dotenv.config()
+const app = express()
+
+app.use(express.json({limit:'30mb'}))
+app.use(express.urlencoded({ extended:true, limit:'30mb'}))
+app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}))
+app.use(morgan('common'))
+app.use(cors())
+app.use('/assets', express.static(path.join(__dirname,'public/assets')))
+
+app.post("/auth", authRoutes)
+
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  } as ConnectOptions)
+  .then(() => {
+    app.listen(process.env.PORT, () => console.log(`Server Port: ${process.env.PORT}`))
+  })

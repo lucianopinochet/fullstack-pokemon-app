@@ -1,0 +1,52 @@
+import bcrypt from 'bcrypt'
+import jwt, { Secret } from "jsonwebtoken"
+import User from '../model/User.js'
+import express from 'express'
+import { type } from 'os'
+
+export const register = async (req: express.Request, res: express.Response) => {
+  try{
+    const {
+      userName,
+      firstName,
+      lastName,
+      email,
+      password,
+      picturePath,
+    } = req.body
+    
+    const salt = await bcrypt.genSalt()
+    const passwordHash = await bcrypt.hash(password, salt)
+
+    const newUser = new User({
+      userName,
+      firstName,
+      lastName,
+      password: passwordHash,
+      picturePath,
+      email,
+    })
+
+    const savedUser = await newUser.save()
+    res.status(201).json(savedUser) 
+  } catch (err) {
+    res.status(500).json({error:(err as Error).message})
+  }
+}
+
+export const login = async (req: express.Request, res:express.Response) => {
+  try {
+    const {userName, password} = req.body
+    const user = await User.findOne({userName:userName})
+    if(!user) return res.status(400).json({msg:"User doesn't exist."})
+
+    const match = await bcrypt.compare(password, user.password)
+    if(!match) return res.status(400).json({msg:"Invalid password"})
+    
+    const token = jwt.sign({ id:user._id}, process.env.JWT_KEYWORD)
+
+    res.status(200).json({token, user})
+  }catch(err){
+    res.status(500).json({error:(err as Error).message})
+  }
+}
