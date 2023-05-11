@@ -5,6 +5,7 @@ type Props = {
 }
 const SearchForm: React.FC<Props> = ({handleSearch}) => {
   
+  
   const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault()
     const target = e.target as typeof e.target & {
