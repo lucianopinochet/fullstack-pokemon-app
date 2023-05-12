@@ -13,8 +13,8 @@ export const register = async (req: express.Request, res: express.Response) => {
       password,
       picturePath,
     } = req.body
-    console.log(picturePath)
     
+    console.log(picturePath)
     const salt = await bcrypt.genSalt()
     const passwordHash = await bcrypt.hash(password, salt)
 
@@ -28,7 +28,7 @@ export const register = async (req: express.Request, res: express.Response) => {
     })
     const savedUser = await newUser.save()
     const token = jwt.sign({ id:savedUser._id}, process.env.JWT_KEYWORD)
-    res.status(201).json({userName, picturePath, token}) 
+    res.status(201).json({userName:userName, picturePath:picturePath, token:token}) 
   } catch (err) {
     res.status(500).json({error:(err as Error).message})
   }

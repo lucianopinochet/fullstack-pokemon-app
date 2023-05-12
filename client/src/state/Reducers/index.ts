@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { profile } from "console";
 
-const initialState = {//set state base
-  userName: null,
-  token: null,
-  profilePhoto:null,
+
+const initialState = {
+  session:{
+    userName: "",
+    token: "",
+    picturePath:"",
+
+  }
 };
 
 export const authSlice = createSlice({// set reducer 
@@ -12,12 +15,12 @@ export const authSlice = createSlice({// set reducer
   initialState,//set the base state data
   reducers: {
     setLogin:(state, action) => {
-      state.userName = action.payload.userName
-      state.token = action.payload.token
-      state.profilePhoto = action.payload.profilePhoto
+      state.session.userName = action.payload.userName
+      state.session.token = action.payload.token
+      state.session.picturePath = action.payload.picturePath
     },
     setLogout:(state) => {
-      state.userName = null
+      state.session.userName = ""
     },
   },
 });

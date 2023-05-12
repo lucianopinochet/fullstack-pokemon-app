@@ -1,7 +1,7 @@
 import {Formik, FormikHelpers} from "formik"
 import * as yup from "yup"
 import { Box, Button, TextField } from "@mui/material"
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { setLogin } from "../../state/Reducers"
 import {useLocation} from "wouter"
 import DropzoneComp from "../DropzoneComp"
@@ -11,26 +11,34 @@ type Props = {
     lastName: string
     email: string
     password: string
-    picturePath: ""
-    [index:string]:string 
+    picturePath: Blob 
+    [index:string]:string | Blob
 }
-
+interface RootState {
+  session: {
+    userName:string
+    token:string
+    picturePath:string
+  }
+}
 
 const Form:React.FC<unknown> = () => {
   const dispatch = useDispatch()
   const [,setLocation] = useLocation()
+  const {userName, picturePath, token} = useSelector((state: RootState) => state.session)
 
   const register = async (values:Props, onSubmitProps:FormikHelpers<Props>) => {
     const formData = new FormData()
     
     for(const value in values) {
-      if(value != 'picturePath')formData.append(value, values[value])
+      formData.append(value, values[value])
     }
-    formData.append("picturePath", values.picturePath)
+    formData.append("picturePath", values.picturePath.name)
     
-    for (const key of formData.values()) {
-      console.log(key);
-    }
+    // for (const key of formData.values()) {
+    //   console.log(key);
+    // }
+    // console.log(values.picturePath)
     const savedUserResponse = await fetch(
       "http://localhost:3001/auth/register",
       {
@@ -41,10 +49,11 @@ const Form:React.FC<unknown> = () => {
     
     const savedUser = await savedUserResponse.json()
     // console.log(savedUser)
-    onSubmitProps.resetForm()
-    if(!savedUser){
-      dispatch(setLogin(savedUser))
-      setLocation("/")
+    // onSubmitProps.resetForm()
+    if(savedUser){
+      // console.log(userName, picturePath, token)
+      dispatch(setLogin({userName:savedUser.userName,token:savedUser.token,picturePath:savedUser.picturePath}))
+      // setLocation("/")
     }
   }
   const registerSchema = yup.object().shape({
@@ -62,7 +71,7 @@ const Form:React.FC<unknown> = () => {
     lastName: "",
     email: "",
     password: "",
-    picturePath: "",
+    picturePath: new Blob,
   }
 
   const handleFormSubmit  = async (values:Props, onSubmitProps:FormikHelpers<Props>) => {
