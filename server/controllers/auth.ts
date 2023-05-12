@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 import jwt, { Secret } from "jsonwebtoken"
 import User from '../model/User.js'
 import express from 'express'
-import { type } from 'os'
 
 export const register = async (req: express.Request, res: express.Response) => {
   try{
@@ -26,9 +25,9 @@ export const register = async (req: express.Request, res: express.Response) => {
       picturePath,
       email,
     })
-
     const savedUser = await newUser.save()
-    res.status(201).json(savedUser) 
+    const token = jwt.sign({ id:savedUser._id}, process.env.JWT_KEYWORD)
+    res.status(201).json({userName, picturePath, token}) 
   } catch (err) {
     res.status(500).json({error:(err as Error).message})
   }

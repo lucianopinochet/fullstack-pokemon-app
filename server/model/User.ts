@@ -21,18 +21,20 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       required: true,
       min:8,
+      unique: false,
       max:20,
     },
     firstName:{
       type: String,
       required: true,
+      unique: false,
       max:50,
     },
     lastName:{
       type: String,
       required: true,
+      unique: false,
       max:50,
-      unique: true,
     },
     email:{
       type: String,
@@ -42,6 +44,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     },
     picturePath:{
       type: String,
+      unique: false,
       default: "",
     },
   },{timestamps:true}

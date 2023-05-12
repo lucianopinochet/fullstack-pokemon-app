@@ -1,77 +1,158 @@
-import {Formik} from "formik"
+import {Formik, FormikHelpers} from "formik"
 import * as yup from "yup"
 import { Box, Button, TextField } from "@mui/material"
-import Dropzone from "react-dropzone"
-const Form = () => {
+import {useDispatch} from "react-redux"
+import { setLogin } from "../../state/Reducers"
+import {useLocation} from "wouter"
+import DropzoneComp from "../DropzoneComp"
+type Props = {
+  userName: string
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+    picturePath: string
+    [index:string]:string
+}
+
+
+const Form:React.FC<unknown> = () => {
+  const dispatch = useDispatch()
+  const [,setLocation] = useLocation()
+
+  const register = async (values:Props, onSubmitProps:FormikHelpers<Props>) => {
+    const formData = new FormData()
+    
+    for(const value in values) {
+      if(value != 'picturePath')formData.append(value, values[value])
+    }
+    formData.append("picturePath", values["picturePath"])
+    
+    for (const key of formData.keys()) {
+      console.log(key);
+    }
+    const savedUserResponse = await fetch(
+      "http://localhost:3001/auth/register",
+      {
+        method: "POST",
+        body:formData
+      }
+    )
+    
+    const savedUser = await savedUserResponse.json()
+    console.log(savedUser)
+    onSubmitProps.resetForm()
+    if(!savedUser){
+      dispatch(setLogin(savedUser))
+      setLocation("/")
+    }
+  }
   const registerSchema = yup.object().shape({
     userName: yup.string().required("Required"),
     firstName: yup.string().required("Required"),
     lastName: yup.string().required("Required"),
     email: yup.string().required("Required").email("Invalid Email"),
     password: yup.string().required("Required"),
-    picturePath: yup.string().required("Required"),
+    picturePath: yup.string(),
   }) 
+
+  const initialValuesRegister:Props = {
+    userName: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    picturePath: "",
+  }
+
+  const handleFormSubmit  = async (values:Props, onSubmitProps:FormikHelpers<Props>) => {
+    await register(values, onSubmitProps)
+  }
+
   return (
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={initialValuesRegister}
       validationSchema={registerSchema}
     >
-    {formik => {
-      const {values,
-        errors,
-        touched,
-        handleSubmit,
-        setFieldValue} = formik
+      {formik => {
+        const {values,
+          errors,
+          handleSubmit,
+          handleChange,
+          handleBlur,
+          touched,
+          setFieldValue
+        } = formik
         return (
-      <form onSubmit={handleSubmit}>
-        <Box>
-          <TextField 
-            label="Username"
-            value={values.userName}
-            name="userName"
-            error={errors.userName}
-            autoFocus={true}
-          />
-          <TextField 
-            label="First Name"
-            value={values.firstName}
-            name="firstName"
-            error={errors.firstName}
-            autoFocus={true}
-          />
-          <TextField 
-            label="Last Name"
-            value={values.lastName}
-            name="lastName"
-            error={errors.lastName}
-            autoFocus={true}
-          />
-          <TextField 
-            label="Email"
-            value={values.email}
-            name="email"
-            error={errors.email}
-            autoFocus={true}
-          />
-          <TextField 
-            label="Password"
-            type="password"
-            value={values.password}
-            name="password"
-            error={errors.password}
-            autoFocus={true}
-          />
-          <Dropzone
-            accept = {}
-
-            
-          >
-
-          </Dropzone>
-        </Box>
-      </form>
-
+          <form onSubmit={handleSubmit}>
+            <Box>
+              <TextField 
+                label="Username"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.userName}
+                name="userName"
+                error={
+                  Boolean(touched.userName) && Boolean(errors.userName)
+                }
+                helperText={touched.userName && errors.userName}
+            />
+              <TextField 
+                label="First Name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.firstName}
+                name="firstName"
+                error={
+                  Boolean(touched.firstName) && Boolean(errors.firstName)
+                }
+                helperText={touched.firstName && errors.firstName}
+              />
+              <TextField 
+                label="Last Name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lastName}
+                name="lastName"
+                error={
+                  Boolean(touched.lastName) && Boolean(errors.lastName)
+                }
+                helperText={touched.lastName && errors.lastName}
+              />
+              <TextField 
+                label="Email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.email}
+                name="email"
+                error={
+                  Boolean(touched.email) && Boolean(errors.email)
+                }
+                helperText={touched.email && errors.email}
+              />
+              <TextField 
+                label="Password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                name="password"
+                error={
+                  Boolean(touched.password) && Boolean(errors.password)
+                }
+                type="password"
+                helperText={touched.password && errors.password}
+              />
+              <DropzoneComp func={setFieldValue}/>
+            </Box>
+            <Box>
+              <Button 
+                type="submit"
+              >
+                Submit
+              </Button>
+            </Box>
+          </form>
         )
     }
     }
@@ -79,4 +160,5 @@ const Form = () => {
   )
 }
 
+// const Form = () => {}
 export default Form
