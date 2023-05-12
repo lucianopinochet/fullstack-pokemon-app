@@ -11,8 +11,8 @@ type Props = {
     lastName: string
     email: string
     password: string
-    picturePath: string
-    [index:string]:string
+    picturePath: ""
+    [index:string]:string 
 }
 
 
@@ -26,9 +26,9 @@ const Form:React.FC<unknown> = () => {
     for(const value in values) {
       if(value != 'picturePath')formData.append(value, values[value])
     }
-    formData.append("picturePath", values["picturePath"])
+    formData.append("picturePath", values.picturePath)
     
-    for (const key of formData.keys()) {
+    for (const key of formData.values()) {
       console.log(key);
     }
     const savedUserResponse = await fetch(
@@ -40,7 +40,7 @@ const Form:React.FC<unknown> = () => {
     )
     
     const savedUser = await savedUserResponse.json()
-    console.log(savedUser)
+    // console.log(savedUser)
     onSubmitProps.resetForm()
     if(!savedUser){
       dispatch(setLogin(savedUser))

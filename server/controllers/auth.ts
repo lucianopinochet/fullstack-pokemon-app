@@ -13,6 +13,7 @@ export const register = async (req: express.Request, res: express.Response) => {
       password,
       picturePath,
     } = req.body
+    console.log(picturePath)
     
     const salt = await bcrypt.genSalt()
     const passwordHash = await bcrypt.hash(password, salt)
