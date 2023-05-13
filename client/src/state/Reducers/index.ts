@@ -9,6 +9,13 @@ const initialState = {
 
   }
 };
+export interface RootState {
+  session:{
+    userName: string
+    token: string
+    picturePath:string
+  }
+}
 
 export const authSlice = createSlice({// set reducer 
   name: "auth", //set a name for the reducer

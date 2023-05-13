@@ -1,18 +1,16 @@
 nav{
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    gap: 10px;
-    width: 100vw;
     height: 5vh;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 a{
     padding: 0 16px;
     font-family: 'Manrope', sans-serif;
     text-decoration: none;
-    color: white;
-
 }
-a:hover{
-    color: white;
+a:visited{
+    color: inherit;
 }

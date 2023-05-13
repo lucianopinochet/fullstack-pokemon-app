@@ -16,10 +16,6 @@ import authRoutes from './routes/auth.js'
 import user from './data/user.js'
 
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename).slice(0,-5)
-// console.log(__dirname, process.cwd())
-
 dotenv.config()
 const app = express()
 
@@ -27,10 +23,10 @@ app.use(express.json())
 // app.use(express.urlencoded({ extended:true, limit:'30mb'}))
 app.use(helmet.crossOriginResourcePolicy({policy: "cross-origin"}))
 app.use(morgan('common'))
-app.use(cors())
-app.use('/assets', express.static(path.join(__dirname,'public/assets')))
 app.use(bodyParser.json({ limit: "30mb"}))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
+app.use(cors())
+app.use('/assets', express.static(path.join(process.cwd(),'public/assets')))
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -44,7 +40,7 @@ const upload = multer({storage})
 
 app.post("/auth/register", upload.single('picturePath'), register)
 
-app.post("/auth", authRoutes)
+app.use("/auth", authRoutes)
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -53,6 +49,6 @@ mongoose
   } as ConnectOptions)
   .then(() => {
     app.listen(process.env.PORT, () => console.log(`Server Port: ${process.env.PORT}`))
-
-    //User.insertMany(user)
+    // User.collection.drop()
+    //User.insertMany(user) 
   })

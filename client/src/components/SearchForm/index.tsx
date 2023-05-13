@@ -1,5 +1,5 @@
 import React, { Dispatch } from "react"
-
+import './index.css'
 type Props = {
   handleSearch:Dispatch<React.SetStateAction<string>>
 }
@@ -15,7 +15,7 @@ const SearchForm: React.FC<Props> = ({handleSearch}) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="search-bar">
       <input 
         name="pokemonName" 
         type="text"

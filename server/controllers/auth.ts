@@ -44,8 +44,8 @@ export const login = async (req: express.Request, res:express.Response) => {
     if(!match) return res.status(400).json({msg:"Invalid password"})
     
     const token = jwt.sign({ id:user._id}, process.env.JWT_KEYWORD)
-
-    res.status(200).json({token, user})
+    console.log(user)
+    res.status(200).json({token, user })
   }catch(err){
     res.status(500).json({error:(err as Error).message})
   }

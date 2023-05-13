@@ -1,6 +1,6 @@
 import {Route, Switch} from "wouter"
 import Home from "./pages/Home"
-import Register from "./pages/Register"
+import LoginRegister from "./pages/LoginRegister"
 import './App.css'
 import { PokemonContextProvider } from "./context/PokemonContext"
 
@@ -13,10 +13,8 @@ function App() {
             component={Home} 
             path="/"
           />
-          <Route 
-            component={Register}
-            path="/register"
-          />
+          <Route path="/login"><LoginRegister isLogin={true}/></Route>
+          <Route path="/register"><LoginRegister isLogin={false}/></Route>
         </Switch>
       </PokemonContextProvider>
   )

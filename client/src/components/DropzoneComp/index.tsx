@@ -17,6 +17,9 @@ const DropzoneComp:React.FC<Prop> = ({func}) => {
   return (
     <Box
       {...getRootProps()}
+      border={`2px dashed #aaaaaa`}
+      p="1rem"
+      sx={{ "&:hover": { cursor: "pointer" } }}
     >
       <input {...getInputProps()} />
       <p>Add Picture Here</p>
