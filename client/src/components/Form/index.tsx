@@ -3,11 +3,12 @@ import * as yup from "yup"
 import { Box, Button, TextField } from "@mui/material"
 import {useDispatch} from "react-redux"
 import {useLocation} from "wouter"
-
+import { useState } from "react"
 import { setLogin } from "../../state/Reducers"
 import DropzoneComp from "../DropzoneComp"
 
 import './index.css'
+
 type Props = {
     userName: string
     firstName?: string
@@ -23,11 +24,20 @@ type FormProp = {
 }
 
 const Form:React.FC<FormProp> = ({isLogin}) => {
+
+
   const dispatch = useDispatch()
   
   const [,setLocation] = useLocation()
   
-  
+  const [Error, setError] = useState({
+    userName:false,
+    email:false,
+    password:false,
+  })
+
+  console.log(Error)
+
   const login = async(values:Props, onSubmitProps:FormikHelpers<Props>) => {
     const loggedReturn = await fetch("http://localhost:3001/auth/login",{
       method: "POST",
@@ -36,10 +46,17 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
     })
     
     const loggedIn = await loggedReturn.json()
-
-    onSubmitProps.resetForm()
-    
-    if(loggedIn) {
+    console.log(loggedIn)
+    if(loggedIn.error){
+      if(loggedIn.error.keyPattern.userName == 1){
+        setError(loggedIn.error.keyPattern)
+      }else{
+        setError(loggedIn.error.keyPattern)
+        
+      }
+      console.log(Error)
+    }else{
+      onSubmitProps.resetForm()
       console.log("Loggin succesful, user: ", loggedIn.user)
       dispatch(
         setLogin(
@@ -65,7 +82,6 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
         }
       }
     }
-    
     if(typeof(values.picturePath) != 'undefined')formData.append("picturePath", values.picturePath.name)
   
     const savedUserResponse = await fetch(
@@ -76,12 +92,18 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
       }
     )
     
+
     const savedUser = await savedUserResponse.json()
-  
-  
-    onSubmitProps.resetForm()
-  
-    if(savedUser){
+      
+    if(savedUser.error){
+      console.log(savedUser.error)
+    }else{
+      onSubmitProps.resetForm()
+      setError({
+        userName:false,
+        email:false,
+        password:false,
+      })
       console.log("Registration succesful, user: ", savedUser)
       dispatch(
         setLogin(
@@ -94,14 +116,14 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
       setLocation("/")
     }
   }
-  
+
   const registerSchema = yup.object().shape({
     userName: yup.string().required("Required"),
     firstName: yup.string().required("Required"),
     lastName: yup.string().required("Required"),
     email: yup.string().required("Required").email("Invalid Email"),
     password: yup.string().required("Required"),
-    picturePath: yup.string(),
+    picturePath: yup.string().required("Required"),
   }) 
 
   const loginSchema = yup.object().shape({
@@ -128,7 +150,60 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
     ? await login(values, onSubmitProps)
     : await register(values, onSubmitProps)
   }
-
+  const handleUserNameChange = async (e:React.ChangeEvent<HTMLInputElement>, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void):Promise<void> =>  {
+    handleChange(e)
+    const answer = await fetch(
+      "http://localhost:3001/auth/userName",
+      {
+        method: "POST",
+      headers: {"Content-Type": "application/json"},
+        body:JSON.stringify({userName:e.target.value})
+      }
+    )
+    const isValid = await answer.json()
+    if(!isValid){
+      setError((prevError) => {
+        return {
+          ...prevError,
+          userName:true,
+        }
+      })
+    }else{
+      setError((prevError) => {
+        return {
+          ...prevError,
+          userName:false,
+        }
+      })
+    }
+  }
+  const handleEmailChange = async (e:React.ChangeEvent<HTMLInputElement>, handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void):Promise<void> =>  {
+    handleChange(e)
+    const answer = await fetch(
+      "http://localhost:3001/auth/email",
+      {
+        method: "POST",
+      headers: {"Content-Type": "application/json"},
+        body:JSON.stringify({email:e.target.value})
+      }
+    )
+    const isValid = await answer.json()
+    if(!isValid){
+      setError((prevError) => {
+        return {
+          ...prevError,
+          email:true,
+        }
+      })
+    }else{
+      setError((prevError) => {
+        return {
+          ...prevError,
+          email:false,
+        }
+      })
+    }
+  }
   return (
     <Formik
       onSubmit={(values, onSubmitProps) => handleFormSubmit(values, onSubmitProps)}
@@ -149,71 +224,90 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
             <Box className='submit-input'>
               <TextField 
                 label="Username"
-                onChange={handleChange}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleUserNameChange(e, handleChange)}
                 onBlur={handleBlur}
                 value={values.userName}
                 name="userName"
                 error={
-                  Boolean(touched.userName) && Boolean(errors.userName)
+                  Boolean(touched.userName && errors.userName) || Error.userName
                 }
-                helperText={touched.userName && errors.userName}
               />
-                <TextField 
-                  label="Password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  name="password"
-                  error={
-                    Boolean(touched.password) && Boolean(errors.password)
-                  }
-                  type="password"
-                  helperText={touched.password && errors.password}
+              {
+                Boolean(touched.userName) && Boolean(errors.userName)
+                  ? <p className="error-input">Required</p>
+                  : Error.userName &&  <p className="error-input"> The username is already in use</p> 
+              }
+              <TextField 
+                label="Password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+                name="password"
+                error={
+                  Boolean(touched.password && errors.password) || Error.password
+                }
+                type="password"
+              />
+              {
+                Boolean(touched.password) && Boolean(errors.password) && <p className="error-input">Required</p>
+              }
+              {!isLogin && (
+                <>
+                  <TextField 
+                    label="First Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.firstName}
+                    name="firstName"
+                    error={
+                      Boolean(touched.firstName && errors.firstName) 
+                    }
                   />
-                  {!isLogin && (
-                      <>
-    
-                        <TextField 
-                          label="First Name"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.firstName}
-                          name="firstName"
-                          error={
-                            Boolean(touched.firstName) && Boolean(errors.firstName)
-                          }
-                          helperText={touched.firstName && errors.firstName}
-                        />
-                        <TextField 
-                          label="Last Name"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.lastName}
-                          name="lastName"
-                          error={
-                            Boolean(touched.lastName) && Boolean(errors.lastName)
-                          }
-                          helperText={touched.lastName && errors.lastName}
-                        />
-                        <TextField 
-                          label="Email"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.email}
-                          name="email"
-                          error={
-                            Boolean(touched.email) && Boolean(errors.email)
-                          }
-                          helperText={touched.email && errors.email}
-                        />
-                        <DropzoneComp func={setFieldValue}/>
-                      </>
-                    ) 
+                  {
+                    Boolean(touched.firstName) && Boolean(errors.firstName) && <p className="error-input">Required</p>
                   }
+                  <TextField 
+                    label="Last Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.lastName}
+                    name="lastName"
+                    error={
+                      Boolean(touched.lastName && errors.lastName)
+                    }
+                  />
+                  {
+                    Boolean(touched.lastName) && Boolean(errors.lastName) && <p className="error-input">Required</p>
+                  }
+                  <TextField 
+                    label="Email"
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleEmailChange(e, handleChange)}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    name="email"
+                    error={
+                      Boolean(touched.email && errors.email) || Error.email
+                    }
+                  />
+                  {
+                    Boolean(touched.email) && Boolean(errors.email)
+                    ? <p className="error-input">Required</p>
+                    : Error.email &&  <p className="error-input"> The email is already in use</p> 
+                  }
+                  <DropzoneComp func={setFieldValue} picturePath={values.picturePath}/>
+                </>
+              )}
             </Box>
             <Box>
               <Button 
                 type="submit"
+                sx={{
+                  m: "2rem 0",
+                  p: "1rem",
+                  backgroundColor: '#aaaa',
+                  color: '#fff',
+                  "&:hover": { backgroundColor: '#99aa11' },
+                }}
               >
                 Submit
               </Button>

@@ -28,6 +28,8 @@ export const authSlice = createSlice({// set reducer
     },
     setLogout:(state) => {
       state.session.userName = ""
+      state.session.token = ""
+      state.session.picturePath = ""
     },
   },
 });

@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import jwt, { Secret } from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import User from '../model/User.js'
 import express from 'express'
 
@@ -13,8 +13,7 @@ export const register = async (req: express.Request, res: express.Response) => {
       password,
       picturePath,
     } = req.body
-    
-    console.log(picturePath)
+    console.log(userName)
     const salt = await bcrypt.genSalt()
     const passwordHash = await bcrypt.hash(password, salt)
 
@@ -26,11 +25,13 @@ export const register = async (req: express.Request, res: express.Response) => {
       picturePath,
       email,
     })
+    console.log(newUser)
     const savedUser = await newUser.save()
     const token = jwt.sign({ id:savedUser._id}, process.env.JWT_KEYWORD)
     res.status(201).json({userName:userName, picturePath:picturePath, token:token}) 
   } catch (err) {
-    res.status(500).json({error:(err as Error).message})
+    console.log(err)
+    res.status(500).json({error:(err as Error)})
   }
 }
 
@@ -47,6 +48,6 @@ export const login = async (req: express.Request, res:express.Response) => {
     console.log(user)
     res.status(200).json({token, user })
   }catch(err){
-    res.status(500).json({error:(err as Error).message})
+    res.status(500).json({error:(err as Error)})
   }
 }

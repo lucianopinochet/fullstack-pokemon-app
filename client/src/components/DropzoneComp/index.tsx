@@ -1,12 +1,20 @@
 import { useDropzone } from "react-dropzone"
 import { Box } from "@mui/material"
 import { useEffect} from "react"
+
+import './index.css'
+
 type Prop = {
-  func:(field: string, value: File, shouldValidate?: boolean | undefined)=>void,
+  func:(field: string, value: File, shouldValidate?: boolean | undefined)=>void
+  picturePath: Blob | undefined
 }
 
-const DropzoneComp:React.FC<Prop> = ({func}) => {
-  const {getRootProps, getInputProps, acceptedFiles} = useDropzone({
+const DropzoneComp:React.FC<Prop> = ({func, picturePath}) => {
+  const {
+          getRootProps,
+          getInputProps, 
+          acceptedFiles,
+        } = useDropzone({
     accept: {
       'image/*': ['.jpeg', '.png', '.jpg']
     }
@@ -21,8 +29,12 @@ const DropzoneComp:React.FC<Prop> = ({func}) => {
       p="1rem"
       sx={{ "&:hover": { cursor: "pointer" } }}
     >
-      <input {...getInputProps()} />
-      <p>Add Picture Here</p>
+      <input  {...getInputProps()} />
+      {
+        picturePath
+        ? <p className="dropzone">{picturePath.name}</p>
+        : <p className="dropzone">Add Picture Here</p>
+      }
     </Box>)
 }
 export default DropzoneComp
