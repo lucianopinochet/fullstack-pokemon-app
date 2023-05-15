@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation } from "wouter"
-import { Button, Box, IconButton } from "@mui/material"
+import { Box, IconButton } from "@mui/material"
 import { Home, Login, Logout, Create } from "@mui/icons-material"
 
 import { RootState, setLogout } from "../../state/Reducers"
@@ -38,10 +38,16 @@ export default function Navbar(){
       <IconButton onClick={() => setLocation('/')}>
         <FlexBetween 
           sx={{
-            height:"40px",
+            height:"45px",
+            flexDirection:"column",
+            gap:"0",
+            fontSize:"17px"
+            
+            
           }}
         >
           <Home/>
+          Home
         </FlexBetween>
       </IconButton>      
       {
@@ -51,19 +57,27 @@ export default function Navbar(){
             <IconButton onClick={() => setLocation('/login')}>
               <FlexBetween 
                 sx={{
-                  height:"40px",
+                  height:"45px",
+                  flexDirection:"column",
+                  gap:"0",
+                  fontSize:"17px"
                 }}
               >
                 <Login/>
+                Login
               </FlexBetween>
             </IconButton>
             <IconButton onClick={() => setLocation('/register')}>
               <FlexBetween 
                 sx={{
-                  height:"40px",
+                  height:"45px",
+                  flexDirection:"column",
+                  gap:"0",
+                  fontSize:"17px"
                 }}
               >
                 <Create/>
+                Register
               </FlexBetween>
             </IconButton>
           </>
@@ -71,26 +85,30 @@ export default function Navbar(){
           <IconButton onClick={handleClick}>
             <FlexBetween 
               sx={{
-                height:"40px",
+                height:"45px",
+                flexDirection:"column",
+                gap:"0",
+                fontSize:"17px"
               }}
             >
               <Logout />
+              Logout
             </FlexBetween>
           </IconButton>
       }
       
       <SearchForm handleSearch={setSearch}/>
       
-      <FlexBetween
+      {userName && <FlexBetween
         sx={{
           fontSize:'16px',
           fontFamily:'"Roboto","Helvetica","Arial",sans-serif',
-          height:"40px",
+          height:"45px",
 
         }}
       >
         {userName} 
-      </FlexBetween>
+      </FlexBetween>}
     </Box>
   )
 } 
