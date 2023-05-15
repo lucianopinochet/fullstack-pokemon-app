@@ -28,7 +28,7 @@ export const register = async (req: express.Request, res: express.Response) => {
     console.log(newUser)
     const savedUser = await newUser.save()
     const token = jwt.sign({ id:savedUser._id}, process.env.JWT_KEYWORD)
-    res.status(201).json({userName:userName, picturePath:picturePath, token:token}) 
+    res.status(201).json({userName:userName, picturePath:picturePath ? picturePath : '', token:token}) 
   } catch (err) {
     console.log(err)
     res.status(500).json({error:(err as Error)})

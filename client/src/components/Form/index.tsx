@@ -36,7 +36,6 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
     password:false,
   })
 
-  console.log(Error)
 
   const login = async(values:Props, onSubmitProps:FormikHelpers<Props>) => {
     const loggedReturn = await fetch("http://localhost:3001/auth/login",{
@@ -123,7 +122,7 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
     lastName: yup.string().required("Required"),
     email: yup.string().required("Required").email("Invalid Email"),
     password: yup.string().required("Required"),
-    picturePath: yup.string().required("Required"),
+    picturePath: yup.string(),
   }) 
 
   const loginSchema = yup.object().shape({
@@ -222,16 +221,29 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
         return (
           <form onSubmit={handleSubmit} className="submit-form">
             <Box className='submit-input'>
-              <TextField 
-                label="Username"
-                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleUserNameChange(e, handleChange)}
-                onBlur={handleBlur}
-                value={values.userName}
-                name="userName"
-                error={
-                  Boolean(touched.userName && errors.userName) || Error.userName
-                }
-              />
+              {
+                isLogin 
+                ?<TextField 
+                  label="Username"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.userName}
+                  name="userName"
+                  error={
+                    Boolean(touched.userName && errors.userName) || Error.userName
+                  }
+                />
+                :<TextField 
+                  label="Username"
+                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleUserNameChange(e, handleChange)}
+                  onBlur={handleBlur}
+                  value={values.userName}
+                  name="userName"
+                  error={
+                    Boolean(touched.userName && errors.userName) || Error.userName
+                  }
+                />
+              }
               {
                 Boolean(touched.userName) && Boolean(errors.userName)
                   ? <p className="error-input">Required</p>
@@ -304,7 +316,7 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
                 sx={{
                   m: "2rem 0",
                   p: "1rem",
-                  backgroundColor: '#aaaa',
+                  backgroundColor: 'c',
                   color: '#fff',
                   "&:hover": { backgroundColor: '#99aa11' },
                 }}

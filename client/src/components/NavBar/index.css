@@ -1,11 +1,3 @@
-nav{
-    height: 5vh;
-    padding: 0 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
 a{
     padding: 0 16px;
     font-family: 'Manrope', sans-serif;
