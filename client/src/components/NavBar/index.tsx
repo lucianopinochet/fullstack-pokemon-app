@@ -1,10 +1,12 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation } from "wouter"
 import { Button, Box, IconButton } from "@mui/material"
-import { Home } from "@mui/icons-material"
+import { Home, Login, Logout, Create } from "@mui/icons-material"
+
 import { RootState, setLogout } from "../../state/Reducers"
 import SearchForm from "../SearchForm"
 import { useInfo } from "../../hooks/useInfo";
+import  FlexBetween  from "../FlexBetween"
 
 import './index.css'
 export default function Navbar(){
@@ -33,73 +35,62 @@ export default function Navbar(){
         justifyContent: 'space-between',
       }}
     >
-      <IconButton type="submit">
-          <Home
-            sx={{
-              color:"#dddddd",
-              backgroundColor:''
-            }}
-          />
-        </IconButton>
+      <IconButton onClick={() => setLocation('/')}>
+        <FlexBetween 
+          sx={{
+            height:"40px",
+          }}
+        >
+          <Home/>
+        </FlexBetween>
+      </IconButton>      
       {
         !token 
         ?
           <>
-            <Button 
-              sx={{
-                m: "2rem 0",
-                p: "1rem",
-                backgroundColor: '#aaaa',
-                color: '#fff',
-                "&:hover": { backgroundColor: '#99aa11' },
-                "&:visited": { color: '#fff' },
-              }}
-              onClick={() => setLocation('/login')}
-            >
-              Login
-            </Button>        
-            <Button 
-              sx={{
-                m: "2rem 0",
-                p: "1rem",
-                backgroundColor: '#aaaa',
-                color: '#fff',
-                "&:hover": { backgroundColor: '#99aa11' },
-                "&:visited": { color: '#fff' },
-              }}
-              onClick={() => setLocation('/register')}
-            >
-              Register
-            </Button>
+            <IconButton onClick={() => setLocation('/login')}>
+              <FlexBetween 
+                sx={{
+                  height:"40px",
+                }}
+              >
+                <Login/>
+              </FlexBetween>
+            </IconButton>
+            <IconButton onClick={() => setLocation('/register')}>
+              <FlexBetween 
+                sx={{
+                  height:"40px",
+                }}
+              >
+                <Create/>
+              </FlexBetween>
+            </IconButton>
           </>
         :
-          <>
-            <Button
-              onClick={handleClick}
+          <IconButton onClick={handleClick}>
+            <FlexBetween 
               sx={{
-                m: "2rem 0",
-                p: "1rem",
-                backgroundColor: '#aaaa',
-                color: '#fff',
-                "&:hover": { backgroundColor: '#99aa11' },
-                "&:visited": { color: '#fff' },
+                height:"40px",
               }}
             >
-              Logout
-            </Button>
-          </>
+              <Logout />
+            </FlexBetween>
+          </IconButton>
       }
       
       <SearchForm handleSearch={setSearch}/>
       
-      <Box
+      <FlexBetween
         sx={{
           fontSize:'16px',
-          fontFamily:'"Roboto","Helvetica","Arial",sans-serif'
+          fontFamily:'"Roboto","Helvetica","Arial",sans-serif',
+          height:"40px",
+
         }}
       >
         {userName} 
-      </Box>
+      </FlexBetween>
     </Box>
   )
 } 

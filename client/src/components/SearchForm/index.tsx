@@ -20,23 +20,17 @@ const SearchForm: React.FC<Props> = ({handleSearch}) => {
 
   return (
     <form onSubmit={handleSubmit} >
-      <FlexBetween
-        sx={{
-          backgroundColor:'#333333',
-          borderRadius:"9px",
-          gap:"10rem",
-          padding:"0.1rem 1.5rem",
-        }}
-      >
+      <FlexBetween>
         <InputBase
           placeholder="Search..." 
           name="pokemonName"
           sx={{color:"white"}}
+          className="search-bar"
         />
         <IconButton type="submit">
           <Search
             sx={{
-              color:"#dddddd",
+              color:"white",
             }}
           />
         </IconButton>

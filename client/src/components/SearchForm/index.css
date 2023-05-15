@@ -2,13 +2,20 @@
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill::first-line,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
+input.search-bar:-webkit-autofill,
+input.search-bar:-webkit-autofill::first-line,
+input.search-bar:-webkit-autofill:hover, 
+input.search-bar:-webkit-autofill:focus, 
+input.search-bar:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px #333333 inset !important;
     -webkit-text-fill-color: white;
     -webkit-animation: none;
     font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+html{
+  background-color: #818181;
+  color: white;
+}
+li{
+  list-style-type: none;
 }
