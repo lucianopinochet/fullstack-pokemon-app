@@ -49,6 +49,6 @@ mongoose
   } as ConnectOptions)
   .then(() => {
     app.listen(process.env.PORT, () => console.log(`Server Port: ${process.env.PORT}`))
-    User.collection.drop() 
+    // User.collection.drop() 
     //User.insertMany(user) 
   })

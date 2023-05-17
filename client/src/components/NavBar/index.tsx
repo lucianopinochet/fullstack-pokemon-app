@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation } from "wouter"
-import { Box, IconButton, FormControl, Select, MenuItem } from "@mui/material"
+import { Box, IconButton, FormControl, Select, MenuItem, InputLabel } from "@mui/material"
 import { Home } from "@mui/icons-material"
 
 import { RootState, setLogout } from "../../state/Reducers"
@@ -15,7 +15,7 @@ export default function Navbar(){
   
   const dispatch = useDispatch()
 
-  const [,setLocation] = useLocation()
+  const [Location ,setLocation] = useLocation()
 
   const {setSearch} = useInfo()
 
@@ -35,15 +35,16 @@ export default function Navbar(){
         justifyContent: 'space-between',
       }}
     >
-      <IconButton onClick={() => setLocation('/')}>
+      <IconButton onClick={() => {
+        if(Location != "/")setLocation('/')
+        }}>
         <FlexBetween 
           sx={{
             height:"45px",
             flexDirection:"column",
             gap:"0",
-            fontSize:"17px"
-            
-            
+            fontSize:"17px",
+            backgroundColor:"#6aacf6"
           }}
         >
           <Home/>
@@ -51,33 +52,54 @@ export default function Navbar(){
         </FlexBetween>
       </IconButton>      
       <SearchForm handleSearch={setSearch}/>
-      
-      {userName && <FlexBetween
+      <FlexBetween
         sx={{
-          fontSize:'16px',
+          backgroundColor:"#ee6239",
         }}
       >
-        {userName} 
-      </FlexBetween>}
-      <FlexBetween>
-        <FormControl variant='standard'>
-          <Select
-            sx={{
-              width:'75px'
-            }}
-          >
-            {
-              !token
-              ?
-                <>
-                <MenuItem onClick={() => setLocation('/login')}>Login</MenuItem>
-                <MenuItem onClick={() => setLocation('/register')}>Register</MenuItem>
-                </>
-              :
-              <MenuItem onClick={handleClick}>Logout</MenuItem>
+        <FormControl variant='standard' >
+          {
+            !token
+            ?(
+              <Select
+                sx={{
+                  width:'100px',
+                  color:"#fff !important",
+                }}
+                displayEmpty
+                  >
+                  <MenuItem>Options</MenuItem>
+                  <MenuItem
+                    onClick={() => setLocation('/login')}
+                    value="login"
+                  >
+                    Login
+                  </MenuItem>
+                  <MenuItem 
+                    onClick={() => setLocation('/register')}
+                    value="register"
+                  >
+                    Register
+                  </MenuItem>
+              </Select>
+            )
+            :(
+              <>
+                <Select
+                  sx={{
+                    width:'100px',
+                    color:"#fff !important",
+                  }}
+                  displayEmpty
+                >
+                  <MenuItem >{userName}</MenuItem>
+                  <MenuItem onClick={handleClick} value="logout">Logout</MenuItem>
+                </Select>
+              </>
+            )
 
-            }
-          </Select>
+
+          }
         </FormControl>
       </FlexBetween>
     </Box>

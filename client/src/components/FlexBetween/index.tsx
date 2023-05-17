@@ -5,7 +5,6 @@ const FlexBetween = styled(Box)({ // component to style another component
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  backgroundColor:'#333333',
   color:"white",
   borderRadius:"9px",
   gap:"10rem",

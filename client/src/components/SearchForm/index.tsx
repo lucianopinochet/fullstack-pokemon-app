@@ -22,7 +22,11 @@ const SearchForm: React.FC<Props> = ({handleSearch}) => {
   }
   return (
     <form onSubmit={handleSubmit} >
-      <FlexBetween sx={{height:"45px"}}>
+      <FlexBetween 
+        sx={{
+          height:"45px",
+          backgroundColor:"#d5ac08"
+        }}>
         <Autocomplete 
           disablePortal
           options={pokemons}
