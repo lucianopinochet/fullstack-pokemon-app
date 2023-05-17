@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation } from "wouter"
-import { Box, IconButton } from "@mui/material"
-import { Home, Login, Logout, Create } from "@mui/icons-material"
+import { Box, IconButton, FormControl, Select, MenuItem } from "@mui/material"
+import { Home } from "@mui/icons-material"
 
 import { RootState, setLogout } from "../../state/Reducers"
 import SearchForm from "../SearchForm"
@@ -50,65 +50,36 @@ export default function Navbar(){
           Home
         </FlexBetween>
       </IconButton>      
-      {
-        !token 
-        ?
-          <>
-            <IconButton onClick={() => setLocation('/login')}>
-              <FlexBetween 
-                sx={{
-                  height:"45px",
-                  flexDirection:"column",
-                  gap:"0",
-                  fontSize:"17px"
-                }}
-              >
-                <Login/>
-                Login
-              </FlexBetween>
-            </IconButton>
-            <IconButton onClick={() => setLocation('/register')}>
-              <FlexBetween 
-                sx={{
-                  height:"45px",
-                  flexDirection:"column",
-                  gap:"0",
-                  fontSize:"17px"
-                }}
-              >
-                <Create/>
-                Register
-              </FlexBetween>
-            </IconButton>
-          </>
-        :
-          <IconButton onClick={handleClick}>
-            <FlexBetween 
-              sx={{
-                height:"45px",
-                flexDirection:"column",
-                gap:"0",
-                fontSize:"17px"
-              }}
-            >
-              <Logout />
-              Logout
-            </FlexBetween>
-          </IconButton>
-      }
-      
       <SearchForm handleSearch={setSearch}/>
       
       {userName && <FlexBetween
         sx={{
           fontSize:'16px',
-          fontFamily:'"Roboto","Helvetica","Arial",sans-serif',
-          height:"45px",
-
         }}
       >
         {userName} 
       </FlexBetween>}
+      <FlexBetween>
+        <FormControl variant='standard'>
+          <Select
+            sx={{
+              width:'75px'
+            }}
+          >
+            {
+              !token
+              ?
+                <>
+                <MenuItem onClick={() => setLocation('/login')}>Login</MenuItem>
+                <MenuItem onClick={() => setLocation('/register')}>Register</MenuItem>
+                </>
+              :
+              <MenuItem onClick={handleClick}>Logout</MenuItem>
+
+            }
+          </Select>
+        </FormControl>
+      </FlexBetween>
     </Box>
   )
 } 

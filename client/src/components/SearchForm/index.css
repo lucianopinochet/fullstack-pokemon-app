@@ -13,8 +13,8 @@ input.search-bar:-webkit-autofill:active{
     font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 html{
-  background-color: #818181;
-  color: white;
+  background-color: #fff;
+  color: black;
 }
 li{
   list-style-type: none;
