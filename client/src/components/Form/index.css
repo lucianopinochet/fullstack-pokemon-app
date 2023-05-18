@@ -26,3 +26,12 @@ p{
   margin-left: 14px;
   color: #1a352a;
 }
+.pagetoggle{
+  font-size: 14px;
+  width: 100%;
+  margin-left: 30px;
+}
+.pagetoggle:hover{
+  cursor: pointer;
+  color: #d5d1d1;
+}

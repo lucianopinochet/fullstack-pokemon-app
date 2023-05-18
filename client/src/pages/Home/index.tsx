@@ -7,7 +7,7 @@ export default function Home(){
 
   return (
     <>
-      <Navbar /> 
+      <Navbar extended={true}/> 
       <PokemonInfo pokemon={pokemon}/>
     </>
   )

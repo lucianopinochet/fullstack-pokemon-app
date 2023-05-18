@@ -11,7 +11,7 @@ import './App.css'
 function App() {
   const theme = useMemo(() => createTheme(themeSetting()), [])
 
-  return (
+  return ( 
     <ThemeProvider theme={theme}>
       <PokemonContextProvider>
         <Switch>

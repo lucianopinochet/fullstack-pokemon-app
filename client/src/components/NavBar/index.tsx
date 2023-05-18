@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useLocation } from "wouter"
-import { Box, IconButton, FormControl, Select, MenuItem, InputLabel } from "@mui/material"
+import { Box, IconButton, FormControl, Select, MenuItem, Avatar } from "@mui/material"
 import { Home } from "@mui/icons-material"
 
 import { RootState, setLogout } from "../../state/Reducers"
@@ -9,9 +9,13 @@ import { useInfo } from "../../hooks/useInfo";
 import  FlexBetween  from "../FlexBetween"
 
 import './index.css'
-export default function Navbar(){
+
+type Props = {
+  extended: boolean,
+}
+const Navbar:React.FC<Props> = ({extended}) =>{
   
-  const {userName, token } = useSelector((state:RootState) => state.session)
+  const {userName, token, picturePath } = useSelector((state:RootState) => state.session)
   
   const dispatch = useDispatch()
 
@@ -54,35 +58,32 @@ export default function Navbar(){
         </FlexBetween>
       </IconButton>      
       <SearchForm handleSearch={setSearch}/>
-      <FlexBetween
+      {extended && <FlexBetween
         sx={{
           backgroundColor:"#ee6239",
+          gap:"15px",
+          padding:"0.1rem 1rem"
         }}
       >
+        {token && <Avatar src={`http://localhost:3001/assets/${picturePath}`}/>}
         <FormControl variant='standard' >
           {
             !token
-            ?(
+            ?<>
               <Select
                 sx={{
                   width:'100px',
                   color:"#fff !important",
                 }}
-                label='Options'
+                value=""
                 displayEmpty
-                  >
-                  <MenuItem 
-                    className="item-login-drop" 
-                    value=''
-                    disabled
-                  >
-                    <em>
+              >
+                  <MenuItem className="item-login-drop" disabled value="">
                     Options
-                    </em>
                   </MenuItem>
                   <MenuItem
                     onClick={() => setLocation('/login')}
-                    value="login"
+                    value="signin"
                     className="item-login-drop"
                   >
                     Sign In
@@ -92,10 +93,10 @@ export default function Navbar(){
                     value="register"
                     className="item-login-drop"
                   >
-                    Register
+                    Sign Up
                   </MenuItem>
               </Select>
-            )
+            </>
             :(
               <>
                 <Select
@@ -103,9 +104,10 @@ export default function Navbar(){
                     width:'100px',
                     color:"#fff !important",
                   }}
+                  value=""
                   displayEmpty
                 >
-                  <MenuItem className="item-login-drop" >{userName}</MenuItem>
+                  <MenuItem className="item-login-drop" disabled value="">{userName}</MenuItem>
                   <MenuItem className="item-login-drop" value="profile">Profile</MenuItem>
                   <MenuItem className="item-login-drop" value="settings">Settings</MenuItem>
                   <MenuItem className="item-login-drop" onClick={handleClick} value="logout">Logout</MenuItem>
@@ -114,8 +116,9 @@ export default function Navbar(){
             )
           }
         </FormControl>
-      </FlexBetween>
+      </FlexBetween>}
       
     </Box>
   )
 } 
+export default Navbar

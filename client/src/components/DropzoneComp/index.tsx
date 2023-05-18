@@ -25,7 +25,7 @@ const DropzoneComp:React.FC<Prop> = ({func, picturePath}) => {
   return (
     <Box
       {...getRootProps()}
-      border={`2px dashed #aaaaaa`}
+      border={"2px dashed #1a352a"}
       p="1rem"
       sx={{ "&:hover": { cursor: "pointer" } }}
     >

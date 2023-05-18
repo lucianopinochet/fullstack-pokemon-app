@@ -2,11 +2,13 @@ import {Formik, FormikHelpers} from "formik"
 import * as yup from "yup"
 import { Box, Button, TextField } from "@mui/material"
 import {useDispatch} from "react-redux"
-import {useLocation} from "wouter"
+import {useLocation, Link} from "wouter"
 import { useState } from "react"
+
 import { setLogin } from "../../state/Reducers"
 import DropzoneComp from "../DropzoneComp"
 import FlexBetween from "../FlexBetween"
+
 import './index.css'
 
 type Props = {
@@ -24,7 +26,6 @@ const Form = () => {
   
   const [Location ,setLocation] = useLocation()
   const isLogin = Location == '/login' ? true : false
-  console.log(Location)
   const [Error, setError] = useState({
     userName:false,
     email:false,
@@ -48,10 +49,8 @@ const Form = () => {
         setError(loggedIn.error.keyPattern)
         
       }
-      console.log(Error)
     }else{
       onSubmitProps.resetForm()
-      console.log("Loggin succesful, user: ", loggedIn.user)
       dispatch(
         setLogin(
           {
@@ -228,7 +227,7 @@ const Form = () => {
                     width:'250px',
                     backgroundColor:'#4a8373',
                     flexDirection:'column',
-                    gap:'20px',
+                    gap:'10px',
                     height:'auto',
                     m:'10px',
                     p:'15px'
@@ -331,8 +330,8 @@ const Form = () => {
                   <Button 
                     type="submit"
                     sx={{
-                      m: "0.5rem 0",
-                      p: "1.5rem 3rem",
+                      p: "1rem 3rem",
+                      marginTop: "20px",
                       backgroundColor: '#295241',
                       color: '#fff',
                       "&:hover": { backgroundColor: '#1a352a' },
@@ -343,8 +342,7 @@ const Form = () => {
                   <Button 
                     onClick={() => setLocation('/')}
                     sx={{
-                      m: "0.5rem 0",
-                      p: "1rem",
+                      p: "1rem 1.5rem",
                       backgroundColor: '#295241',
                       color: '#fff',
                       "&:hover": { backgroundColor: '#1a352a' },
@@ -353,6 +351,17 @@ const Form = () => {
                   >
                     Back
                   </Button>
+                  <Link to={Location == "/login" ? "/register" : "/login"}>
+                      {
+                        Location == "/login"
+                        ? <FlexBetween className="pagetoggle">
+                            Sign Up
+                          </FlexBetween>
+                        : <FlexBetween className="pagetoggle">
+                            Sign In
+                          </FlexBetween>
+                      }
+                  </Link>
                 </FlexBetween>
             </Box>
           </form>
