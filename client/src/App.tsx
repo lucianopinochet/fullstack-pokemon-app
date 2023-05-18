@@ -19,8 +19,11 @@ function App() {
             component={Home} 
             path="/"
           />
-          <Route path="/login"><LoginRegister isLogin={true}/></Route>
-          <Route path="/register"><LoginRegister isLogin={false}/></Route>
+          <Route 
+            component={LoginRegister}
+            path="/login" 
+          />
+          <Route component={LoginRegister} path="/register"/>
         </Switch>
       </PokemonContextProvider>
     </ThemeProvider>

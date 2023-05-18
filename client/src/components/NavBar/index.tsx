@@ -33,6 +33,7 @@ export default function Navbar(){
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        m:"10px 10px 40px 10px",
       }}
     >
       <IconButton onClick={() => {
@@ -44,7 +45,8 @@ export default function Navbar(){
             flexDirection:"column",
             gap:"0",
             fontSize:"17px",
-            backgroundColor:"#6aacf6"
+            backgroundColor:"#6aacf6",
+            width:"100px",
           }}
         >
           <Home/>
@@ -66,18 +68,29 @@ export default function Navbar(){
                   width:'100px',
                   color:"#fff !important",
                 }}
+                label='Options'
                 displayEmpty
                   >
-                  <MenuItem>Options</MenuItem>
+                  <MenuItem 
+                    className="item-login-drop" 
+                    value=''
+                    disabled
+                  >
+                    <em>
+                    Options
+                    </em>
+                  </MenuItem>
                   <MenuItem
                     onClick={() => setLocation('/login')}
                     value="login"
+                    className="item-login-drop"
                   >
-                    Login
+                    Sign In
                   </MenuItem>
                   <MenuItem 
                     onClick={() => setLocation('/register')}
                     value="register"
+                    className="item-login-drop"
                   >
                     Register
                   </MenuItem>
@@ -92,16 +105,17 @@ export default function Navbar(){
                   }}
                   displayEmpty
                 >
-                  <MenuItem >{userName}</MenuItem>
-                  <MenuItem onClick={handleClick} value="logout">Logout</MenuItem>
+                  <MenuItem className="item-login-drop" >{userName}</MenuItem>
+                  <MenuItem className="item-login-drop" value="profile">Profile</MenuItem>
+                  <MenuItem className="item-login-drop" value="settings">Settings</MenuItem>
+                  <MenuItem className="item-login-drop" onClick={handleClick} value="logout">Logout</MenuItem>
                 </Select>
               </>
             )
-
-
           }
         </FormControl>
       </FlexBetween>
+      
     </Box>
   )
 } 

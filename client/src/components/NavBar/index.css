@@ -3,3 +3,11 @@ a{
     font-family: 'Manrope', sans-serif;
     text-decoration: none;
 }
+.item-login-drop{
+  background-color: #ee6239 !important;
+  color: #fff !important;
+
+}
+.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper{
+  background-color: #ee6239 !important;
+}

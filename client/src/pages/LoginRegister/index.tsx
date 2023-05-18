@@ -1,30 +1,11 @@
 import React from "react"
-import { Link } from "wouter"
-import { Button } from "@mui/material"
 import Form from "../../components/Form"
+import Navbar from "../../components/NavBar"
 
-type Prop = {
-  isLogin:boolean
-}
-const Register:React.FC<Prop> = ({isLogin}) => {
+const Register:React.FC<void> = () => {
   return <>
-    <Form isLogin={isLogin}/>
-    <div className="submit-input">
-      <Link to='/'>
-      <Button 
-          sx={{
-            m: "2rem 0",
-            p: "1rem",
-            backgroundColor: '#aaaa',
-            color: '#fff',
-            "&:hover": { backgroundColor: '#99aa11' },
-            "&:visited": { color: '#fff' },
-          }}
-        >
-          Back
-        </Button>
-      </Link>
-    </div>
+    <Navbar />
+    <Form />
   </>
 }
 export default Register

@@ -6,7 +6,7 @@ import {useLocation} from "wouter"
 import { useState } from "react"
 import { setLogin } from "../../state/Reducers"
 import DropzoneComp from "../DropzoneComp"
-
+import FlexBetween from "../FlexBetween"
 import './index.css'
 
 type Props = {
@@ -19,17 +19,12 @@ type Props = {
     [index:string]: string | Blob | undefined
 }
 
-type FormProp = {
-  isLogin:boolean
-}
-
-const Form:React.FC<FormProp> = ({isLogin}) => {
-
-
+const Form = () => {
   const dispatch = useDispatch()
   
-  const [,setLocation] = useLocation()
-  
+  const [Location ,setLocation] = useLocation()
+  const isLogin = Location == '/login' ? true : false
+  console.log(Location)
   const [Error, setError] = useState({
     userName:false,
     email:false,
@@ -219,110 +214,146 @@ const Form:React.FC<FormProp> = ({isLogin}) => {
           setFieldValue
         } = formik
         return (
-          <form onSubmit={handleSubmit} className="submit-form">
-            <Box className='submit-input'>
-              {
-                isLogin 
-                ?<TextField 
-                  label="Username"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.userName}
-                  name="userName"
-                  error={
-                    Boolean(touched.userName && errors.userName) || Error.userName
+          <form onSubmit={handleSubmit} className="submit-form" >
+            <Box 
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+                <FlexBetween
+                  sx={{
+                    width:'250px',
+                    backgroundColor:'#4a8373',
+                    flexDirection:'column',
+                    gap:'20px',
+                    height:'auto',
+                    m:'10px',
+                    p:'15px'
+                  }}
+                >
+                  {
+                    isLogin 
+                    ?<TextField 
+                      label="Username"
+                      variant='standard'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.userName}
+                      name="userName"
+                      error={
+                        Boolean(touched.userName && errors.userName) || Error.userName
+                      }
+                    />
+                    :<TextField 
+                      label="Username"
+                      variant='standard'
+                      onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleUserNameChange(e, handleChange)}
+                      onBlur={handleBlur}
+                      value={values.userName}
+                      name="userName"
+                      error={
+                        Boolean(touched.userName && errors.userName) || Error.userName
+                      }
+                    />
                   }
-                />
-                :<TextField 
-                  label="Username"
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleUserNameChange(e, handleChange)}
-                  onBlur={handleBlur}
-                  value={values.userName}
-                  name="userName"
-                  error={
-                    Boolean(touched.userName && errors.userName) || Error.userName
+                  {
+                    Boolean(touched.userName) && Boolean(errors.userName)
+                      ? <p className="error-input">Required</p>
+                      : Error.userName &&  <p className="error-input"> The username is already in use</p> 
                   }
-                />
-              }
-              {
-                Boolean(touched.userName) && Boolean(errors.userName)
-                  ? <p className="error-input">Required</p>
-                  : Error.userName &&  <p className="error-input"> The username is already in use</p> 
-              }
-              <TextField 
-                label="Password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                name="password"
-                error={
-                  Boolean(touched.password && errors.password) || Error.password
-                }
-                type="password"
-              />
-              {
-                Boolean(touched.password) && Boolean(errors.password) && <p className="error-input">Required</p>
-              }
-              {!isLogin && (
-                <>
                   <TextField 
-                    label="First Name"
+                    label="Password"
+                    variant='standard'
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.firstName}
-                    name="firstName"
+                    value={values.password}
+                    name="password"
                     error={
-                      Boolean(touched.firstName && errors.firstName) 
+                      Boolean(touched.password && errors.password) || Error.password
                     }
+                    type="password"
                   />
                   {
-                    Boolean(touched.firstName) && Boolean(errors.firstName) && <p className="error-input">Required</p>
+                    Boolean(touched.password) && Boolean(errors.password) && <p className="error-input">Required</p>
                   }
-                  <TextField 
-                    label="Last Name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.lastName}
-                    name="lastName"
-                    error={
-                      Boolean(touched.lastName && errors.lastName)
-                    }
-                  />
-                  {
-                    Boolean(touched.lastName) && Boolean(errors.lastName) && <p className="error-input">Required</p>
-                  }
-                  <TextField 
-                    label="Email"
-                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleEmailChange(e, handleChange)}
-                    onBlur={handleBlur}
-                    value={values.email}
-                    name="email"
-                    error={
-                      Boolean(touched.email && errors.email) || Error.email
-                    }
-                  />
-                  {
-                    Boolean(touched.email) && Boolean(errors.email)
-                    ? <p className="error-input">Required</p>
-                    : Error.email &&  <p className="error-input"> The email is already in use</p> 
-                  }
-                  <DropzoneComp func={setFieldValue} picturePath={values.picturePath}/>
-                </>
-              )}
-            </Box>
-            <Box>
-              <Button 
-                type="submit"
-                sx={{
-                  m: "2rem 0",
-                  p: "1rem",
-                  backgroundColor: 'c',
-                  color: '#fff',
-                  "&:hover": { backgroundColor: '#99aa11' },
-                }}
-              >
-                Submit
-              </Button>
+                  {!isLogin && (
+                    <>
+                      <TextField 
+                        label="First Name"
+                        variant='standard'
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.firstName}
+                        name="firstName"
+                        error={
+                          Boolean(touched.firstName && errors.firstName) 
+                        }
+                      />
+                      {
+                        Boolean(touched.firstName) && Boolean(errors.firstName) && <p className="error-input">Required</p>
+                      }
+                      <TextField 
+                        label="Last Name"
+                        variant='standard'
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.lastName}
+                        name="lastName"
+                        error={
+                          Boolean(touched.lastName && errors.lastName)
+                        }
+                      />
+                      {
+                        Boolean(touched.lastName) && Boolean(errors.lastName) && <p className="error-input">Required</p>
+                      }
+                      <TextField 
+                        label="Email"
+                        variant='standard'
+                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleEmailChange(e, handleChange)}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        name="email"
+                        error={
+                          Boolean(touched.email && errors.email) || Error.email
+                        }
+                      />
+                      {
+                        Boolean(touched.email) && Boolean(errors.email)
+                        ? <p className="error-input">Required</p>
+                        : Error.email &&  <p className="error-input"> The email is already in use</p> 
+                      }
+                      <DropzoneComp func={setFieldValue} picturePath={values.picturePath}/>
+                    </>
+                  )}
+                  <Button 
+                    type="submit"
+                    sx={{
+                      m: "0.5rem 0",
+                      p: "1.5rem 3rem",
+                      backgroundColor: '#295241',
+                      color: '#fff',
+                      "&:hover": { backgroundColor: '#1a352a' },
+                    }}
+                      >
+                        Submit
+                  </Button>
+                  <Button 
+                    onClick={() => setLocation('/')}
+                    sx={{
+                      m: "0.5rem 0",
+                      p: "1rem",
+                      backgroundColor: '#295241',
+                      color: '#fff',
+                      "&:hover": { backgroundColor: '#1a352a' },
+                      "&:visited": { color: '#fff' },
+                    }}
+                  >
+                    Back
+                  </Button>
+                </FlexBetween>
             </Box>
           </form>
         )
