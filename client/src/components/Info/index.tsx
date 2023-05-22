@@ -12,7 +12,11 @@ const Info: React.FC<Props> = ({prop, pokemon}) => {
       </li>
     )  
   }else{
-    return null
+    return(
+      <li >
+        {`${prop}:object`}
+      </li>
+    ) 
   }
 }
 

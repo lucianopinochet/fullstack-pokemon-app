@@ -57,7 +57,7 @@ const Navbar:React.FC<Props> = ({extended}) =>{
           Home
         </FlexBetween>
       </IconButton>      
-      <SearchForm handleSearch={setSearch}/>
+      {Location == '/' && <SearchForm handleSearch={setSearch}/>}
       {extended && <FlexBetween
         sx={{
           backgroundColor:"#ee6239",
@@ -107,10 +107,10 @@ const Navbar:React.FC<Props> = ({extended}) =>{
                   value=""
                   displayEmpty
                 >
-                  <MenuItem className="item-login-drop" disabled value="">{userName}</MenuItem>
-                  <MenuItem className="item-login-drop" value="profile">Profile</MenuItem>
+                  <MenuItem className="item-login-drop" value="" disabled>{userName}</MenuItem>
+                  <MenuItem className="item-login-drop" value="profile" onClick={() => setLocation('/profile')}>Profile</MenuItem>
                   <MenuItem className="item-login-drop" value="settings">Settings</MenuItem>
-                  <MenuItem className="item-login-drop" onClick={handleClick} value="logout">Logout</MenuItem>
+                  <MenuItem className="item-login-drop" value="logout" onClick={handleClick}>Logout</MenuItem>
                 </Select>
               </>
             )

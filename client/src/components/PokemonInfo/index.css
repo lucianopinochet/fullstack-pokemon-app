@@ -1,0 +1,10 @@
+.info-box img{
+  height: 100%;
+  background-color: #fff;
+}
+.info-box ul li{
+  overflow: hidden;
+}
+.info-box p{
+  text-align: center;
+}

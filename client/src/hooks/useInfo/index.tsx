@@ -14,10 +14,20 @@ export const useInfo = () => {
       getPokemon(search).then((data)=>{
         setPokemon(data)
         if(typeof(data.name) != 'undefined'){
-          document.title = `Pokemon | ${data.name}`
+          if(data.name == 'nidoran-f'){
+            document.title = `Pokemon | Nidoran\u2640`
+          }else if(data.name == 'nidoran-m'){
+            document.title = `Pokemon | Nidoran\u2642`
+          }else{
+            document.title = `Pokemon | ${data.name.charAt(0).toUpperCase() + data.name.slice(1)}`
+          }
         }else{
           document.title = "Error"
         }
+      })
+      .catch((err) => {
+        document.title = "Error"
+        console.error(err)
       })
     }
   },[search, setPokemon])
