@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import authReducer from "./state/Reducers/index.js"
@@ -33,11 +32,11 @@ const store = configureStore({//sets new configuration over the base redux setti
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode> 
 )

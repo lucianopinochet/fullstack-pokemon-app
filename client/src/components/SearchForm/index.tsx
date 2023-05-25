@@ -7,17 +7,20 @@ import './index.css'
 import pokemons from "../../json/parsepokemon.json"
 
 type Props = {
-  handleSearch:Dispatch<React.SetStateAction<string>>
+  handleSearch:Dispatch<React.SetStateAction<number>>
 }
 const SearchForm: React.FC<Props> = ({handleSearch}) => {
-  
+
   const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault()
     const target = e.target as typeof e.target & {
       pokemonName: {value:string}
     }
-    console.log(target.pokemonName.value)
-    handleSearch(target.pokemonName.value)
+    for(const pokemon of pokemons) {
+      if(pokemon.label == target.pokemonName.value) {
+        handleSearch(pokemon.id)
+      }
+    }
   }
   return (
     <form onSubmit={handleSubmit} >

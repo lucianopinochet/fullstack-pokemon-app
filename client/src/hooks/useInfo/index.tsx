@@ -4,9 +4,9 @@ import {useContext} from "react"
 import PokemonContext from "../../context/PokemonContext"
 
 
-export const useInfo = () => {
+const useInfo = () => {
 
-  const [search, setSearch] = useState('pikachu')
+  const [search, setSearch] = useState(1)
   const {pokemon, setPokemon} = useContext(PokemonContext)
 
   useEffect(() => {
@@ -25,11 +25,12 @@ export const useInfo = () => {
           document.title = "Error"
         }
       })
-      .catch((err) => {
+      .catch(() => {
         document.title = "Error"
-        console.error(err)
       })
     }
   },[search, setPokemon])
   return {pokemon ,setSearch }
 }
+
+export default useInfo

@@ -7,7 +7,6 @@ const FlexBetween = styled(Box)({
   alignItems: "center",
   color:"white",
   borderRadius:"9px",
-  gap:"10rem",
   padding:"0.1rem 1.5rem",
   height:"45px",
 });

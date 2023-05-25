@@ -5,7 +5,7 @@ import { Home } from "@mui/icons-material"
 
 import { RootState, setLogout } from "../../state/Reducers"
 import SearchForm from "../SearchForm"
-import { useInfo } from "../../hooks/useInfo";
+import  useInfo  from "../../hooks/useInfo";
 import  FlexBetween  from "../FlexBetween"
 
 import './index.css'
